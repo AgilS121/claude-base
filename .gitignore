@@ -1,0 +1,46 @@
+# Node / JS
+node_modules/
+dist/
+build/
+*.log
+npm-debug.log*
+
+# PHP / Composer
+vendor/
+composer.phar
+
+# Python (kalau MCP pakai python)
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# State files — JANGAN di-commit (per-developer, bukan shared)
+state/
+*.local.json
+*.state.json
+current-focus.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Secrets
+.env
+.env.*
+!.env.example
+secrets.json
+credentials.json
+
+# Install artifacts (jangan commit hasil install)
+installed.log
+install-backup/

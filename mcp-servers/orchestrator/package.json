@@ -1,0 +1,20 @@
+{
+  "name": "claude-mcp-orchestrator",
+  "version": "0.1.0",
+  "description": "Orchestrator MCP untuk Agent Fullstack PHP — identity, focus, task status global",
+  "type": "module",
+  "bin": {
+    "mcp-orchestrator": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.4.0"
+  }
+}

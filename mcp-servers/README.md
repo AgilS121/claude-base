@@ -23,18 +23,34 @@ catat task, record bug, dan analisis history lintas project.
 
 ## Step 1 — Install dependencies & build
 
-Buka **CMD** atau **PowerShell**, build 3 server:
+### Windows (CMD / PowerShell)
 
 ```cmd
-cd C:\Users\Lenovo\.claude\mcp\orchestrator
+cd %USERPROFILE%\.claude\mcp\orchestrator
 npm install
 npm run build
 
-cd C:\Users\Lenovo\.claude\mcp\simlab-v2
+cd %USERPROFILE%\.claude\mcp\simlab-v2
 npm install
 npm run build
 
-cd C:\Users\Lenovo\.claude\mcp\simlab-v2-be
+cd %USERPROFILE%\.claude\mcp\simlab-v2-be
+npm install
+npm run build
+```
+
+### macOS / Linux (Terminal)
+
+```bash
+cd ~/.claude/mcp/orchestrator
+npm install
+npm run build
+
+cd ~/.claude/mcp/simlab-v2
+npm install
+npm run build
+
+cd ~/.claude/mcp/simlab-v2-be
 npm install
 npm run build
 ```
@@ -46,28 +62,105 @@ Setiap `npm run build` compile TypeScript → folder `dist/`.
 
 ## Step 2 — Test MCP manual (opsional tapi dianjurkan)
 
+### Windows
+
 ```cmd
-cd C:\Users\Lenovo\.claude\mcp\orchestrator
+cd %USERPROFILE%\.claude\mcp\orchestrator
+node dist/index.js
+```
+
+### macOS / Linux
+
+```bash
+cd ~/.claude/mcp/orchestrator
 node dist/index.js
 ```
 
 Kamu akan lihat:
 ```
-[orchestrator-mcp] connected. CLAUDE_HOME=C:\Users\Lenovo/.claude
+[orchestrator-mcp] connected. CLAUDE_HOME=/Users/<username>/.claude
 ```
 
 Server hidup, menunggu input stdio. Tekan `Ctrl+C` untuk keluar.
 
-## Step 3 — Daftarkan ke Claude Code (sudah otomatis)
+## Step 3 — Daftarkan ke Claude Code
 
 File `.mcp.json` di root project mendaftarkan MCP server. `enabledMcpjsonServers` di `settings.json` auto-approve.
+
+### Contoh `.mcp.json`
+
+**Windows:**
+```json
+{
+  "mcpServers": {
+    "orchestrator": {
+      "command": "node",
+      "args": ["C:\\Users\\<username>\\.claude\\mcp\\orchestrator\\dist\\index.js"],
+      "env": { "CLAUDE_HOME": "C:\\Users\\<username>\\.claude" }
+    },
+    "simlab-v2-fe": {
+      "command": "node",
+      "args": ["C:\\Users\\<username>\\.claude\\mcp\\simlab-v2\\dist\\index.js"],
+      "env": {
+        "PROJECT_SLUG": "simlab-v2-fe",
+        "PROJECT_PATH": "D:\\path\\to\\old-simlab-v2-fe",
+        "CLAUDE_HOME": "C:\\Users\\<username>\\.claude"
+      }
+    },
+    "simlab-v2-be": {
+      "command": "node",
+      "args": ["C:\\Users\\<username>\\.claude\\mcp\\simlab-v2-be\\dist\\index.js"],
+      "env": {
+        "PROJECT_SLUG": "simlab-v2-be",
+        "PROJECT_PATH": "D:\\path\\to\\old-simlab-v2-be",
+        "CLAUDE_HOME": "C:\\Users\\<username>\\.claude"
+      }
+    }
+  }
+}
+```
+
+**macOS / Linux:**
+```json
+{
+  "mcpServers": {
+    "orchestrator": {
+      "command": "node",
+      "args": ["/Users/<username>/.claude/mcp/orchestrator/dist/index.js"],
+      "env": { "CLAUDE_HOME": "/Users/<username>/.claude" }
+    },
+    "simlab-v2-fe": {
+      "command": "node",
+      "args": ["/Users/<username>/.claude/mcp/simlab-v2/dist/index.js"],
+      "env": {
+        "PROJECT_SLUG": "simlab-v2-fe",
+        "PROJECT_PATH": "/path/to/old-simlab-v2-fe",
+        "CLAUDE_HOME": "/Users/<username>/.claude"
+      }
+    },
+    "simlab-v2-be": {
+      "command": "node",
+      "args": ["/Users/<username>/.claude/mcp/simlab-v2-be/dist/index.js"],
+      "env": {
+        "PROJECT_SLUG": "simlab-v2-be",
+        "PROJECT_PATH": "/path/to/old-simlab-v2-be",
+        "CLAUDE_HOME": "/Users/<username>/.claude"
+      }
+    }
+  }
+}
+```
+
+> **Linux note**: `CLAUDE_HOME` biasanya `/home/<username>/.claude` (bukan `/Users/`).
 
 **Jangan commit `.mcp.json`** — berisi absolute path. Tambahkan ke `.gitignore`.
 
 ### Restart Claude Code
 
-- **CMD/PowerShell**: keluar (Ctrl+D), ketik `claude` lagi
-- **VS Code**: `Ctrl+Shift+P` → `Developer: Reload Window`
+- **Windows CMD/PowerShell**: keluar (Ctrl+D), ketik `claude` lagi
+- **VS Code** (semua OS): `Ctrl+Shift+P` → `Developer: Reload Window`
+- **macOS Terminal**: keluar (Ctrl+D), ketik `claude` lagi
+- **Linux Terminal**: keluar (Ctrl+D), ketik `claude` lagi
 
 ## Step 4 — Verifikasi
 
@@ -212,8 +305,14 @@ Orchestrator (Ketua RT)
 Hapus `enabledMcpjsonServers` dari `settings.json` → restart Claude Code.
 Workflow lama (Grep/Read manual) kembali jalan. Hapus total:
 
+**Windows:**
 ```cmd
-rmdir /s /q C:\Users\Lenovo\.claude\mcp
+rmdir /s /q %USERPROFILE%\.claude\mcp
+```
+
+**macOS / Linux:**
+```bash
+rm -rf ~/.claude/mcp
 ```
 
 Zero side effect ke file lain.
